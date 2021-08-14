@@ -1,2 +1,9 @@
 # react-component-rollup
-rollup打包的react组件
+
+rollup 打包的 react 组件
+
+## Getting Started
+
+```javascript
+yarn doc
+```
