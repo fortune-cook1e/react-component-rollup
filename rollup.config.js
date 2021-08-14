@@ -4,11 +4,12 @@ import commonjs from '@rollup/plugin-commonjs'
 import alias from '@rollup/plugin-alias'
 import typescript from 'rollup-plugin-typescript2'
 import postcss from 'rollup-plugin-postcss'
+import autoprefixer from 'autoprefixer'
 import sass from 'dart-sass'
 import * as path from 'path'
-
 const pkg = require('./package.json')
-const root = path.resolve(__dirname)
+
+const rootDir = path.resolve(__dirname, './src')
 
 export default {
   input: 'src/index.ts',
@@ -24,19 +25,24 @@ export default {
       sourcemap: true
     }
   ],
+  watch: {
+    include: 'src/**'
+  },
   plugins: [
     peerDepsExternal(), // 避免将peer依赖 打包到最终bundle中
-    resolve({
-      extensions: ['.ts', '.tsx']
-    }), // 是否循序第三方库打包到bundle中
     commonjs(), // 能转换为cjs
-    typescript({ useTsconfigDeclarationDir: true }), // 编译typescript
     alias({
-      entries: {
-        find: '@',
-        replacement: path.resolve(root, 'src')
-      }
+      resolve: ['.ts', '.tsx'],
+      entries: [
+        {
+          find: '@',
+          replacement: rootDir
+        }
+      ]
     }),
+
+    resolve(), // 是否循序第三方库打包到bundle中
+    typescript({ useTsconfigDeclarationDir: true }), // 编译typescript
     postcss({
       preprocessor: (content, id) =>
         new Promise(res => {
@@ -44,12 +50,10 @@ export default {
 
           res({ code: result.css.toString() })
         }),
-      // plugins: [autoprefixer],
-      // modules: {
-      //   scopeBehaviour: 'global',
-      // },
+      plugins: [autoprefixer],
       sourceMap: true,
       extract: true
     })
-  ]
+  ],
+  external: Object.keys(pkg.peerDependencies || {})
 }

@@ -1,7 +1,7 @@
 import React, { CSSProperties } from 'react'
 import './button.scss'
 
-import { createNamespace } from '../../utils/bem'
+import { createNamespace } from '@/utils/bem'
 
 enum Color {
   Black = '#2d2b34',
@@ -16,8 +16,6 @@ export interface ButtonProps {
 }
 
 const btn = createNamespace('button')
-
-console.log({ btn })
 
 const Button: React.FC<ButtonProps> = ({ color = Color.Black, text = '按钮' }) => {
   const btnStyle: CSSProperties = {
