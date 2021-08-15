@@ -1,29 +1,18 @@
 import React, { CSSProperties } from 'react'
-import './button.scss'
+import './Button.scss'
+import { ButtonProps, Color } from './Button.types'
 
 import { createNamespace } from '@/utils/bem'
 
-enum Color {
-  Black = '#2d2b34',
-  White = '#d8d7d7',
-  Yellow = '#fed765',
-  Orange = '#eb6e3d'
-}
-
-export interface ButtonProps {
-  color?: Color
-  text?: string
-}
-
 const btn = createNamespace('button')
 
-const Button: React.FC<ButtonProps> = ({ color = Color.Black, text = '按钮' }) => {
+const Button: React.FC<ButtonProps> = ({ color = Color.black, text = '按钮', tip = 'haha' }) => {
   const btnStyle: CSSProperties = {
-    background: color
+    background: 'black'
   }
 
   return (
-    <button className='button' style={btnStyle}>
+    <button className='button' style={btnStyle} title={tip}>
       {text}
     </button>
   )

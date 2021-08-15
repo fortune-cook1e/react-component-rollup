@@ -1,5 +1,4 @@
+import TestComponent from './TestComponent'
 import Button from './components/Button'
 
-import './styles/base.scss'
-
-export { Button }
+export { Button, TestComponent }
