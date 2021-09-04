@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "rootDir": "src",
     "module": "ESNext",
     "allowJs": true,
     "strict": true,
@@ -7,6 +8,8 @@
     "outDir": "./dist",
     "sourceMap": true,
     "esModuleInterop": true,
+    "declarationDir": "lib",
+    "declaration": true,
     "jsx": "preserve",
     "lib": ["dom", "esnext"],
     "baseUrl": "./",
@@ -14,13 +17,17 @@
       "@/*": ["src/*"],
     }
   },
+  "include": ["src/**/*"],
+  "exclude": [
+    "node_modules",
+    "build",
+    "dist",
+    "storybook-static",
+    "src/**/*.stories.tsx",
+    "src/**/*.test.tsx"
+  ],
   "typeRoots": [
     "node_modules/@types",
     "src/global.d.ts",
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build"
   ]
 }
