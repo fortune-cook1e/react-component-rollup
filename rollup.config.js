@@ -1,44 +1,54 @@
-import peerDepsExternal from 'rollup-plugin-peer-deps-external'
 import resolve from '@rollup/plugin-node-resolve'
+import replace from '@rollup/plugin-replace'
 import commonjs from '@rollup/plugin-commonjs'
-import typescript from 'rollup-plugin-typescript2'
-import postcss from 'rollup-plugin-postcss'
+import { babel } from '@rollup/plugin-babel'
+import serve from 'rollup-plugin-serve'
+import livereload from 'rollup-plugin-livereload'
+import html from '@rollup/plugin-html'
 import alias from '@rollup/plugin-alias'
-import babel from '@rollup/plugin-babel'
-import * as path from 'path'
+import postcss from 'rollup-plugin-postcss'
 import copy from 'rollup-plugin-copy'
+import typescript from 'rollup-plugin-typescript2'
+
+import * as path from 'path'
 
 const pkg = require('./package.json')
+const isDev = process.env.NODE_ENV === 'development'
+const extensions = ['.js', '.ts', '.tsx']
 const rootDir = path.resolve(__dirname, './src')
-const EXTENSIONS = ['.ts', '.tsx']
-const EXTERNAL = [Object.keys(pkg.devDependencies)].concat(Object.keys(pkg.peerDependencies))
+const EXTERNAL = [Object.keys(pkg.devDependencies)]
+  .concat(Object.keys(pkg.peerDependencies))
+  .concat(Object.keys(pkg.dependencies))
 
 export default {
-  input: 'src/index.ts',
-  output: [
-    {
-      file: pkg.main,
-      format: 'cjs',
-      sourcemap: true
-    },
-    {
-      file: pkg.module,
-      format: 'esm',
-      sourcemap: true
-      // preserveModules: true // important
-    }
-  ],
-  watch: {
-    include: 'src/**'
+  // 开发模式则用main，组件库打包则用index.ts
+  input: './src/index.ts',
+  output: {
+    file: pkg.module,
+    format: 'esm',
+    sourcemap: true
   },
+  // TIP: 打包应该分为两种 一种为需要依赖(dev:page 和 page部署需要) 第二种组件话不需要依赖
+  external: EXTERNAL, // 解决打包问题 可以替换rollup-plugin-peer-deps-external
   plugins: [
-    peerDepsExternal(),
-    resolve(),
-    commonjs(),
     typescript({ useTsconfigDeclarationDir: true }),
-    postcss(),
+    postcss({
+      plugins: [],
+      modules: false, // 模块化
+      minimize: true,
+      use: {
+        sass: null,
+        stylus: null,
+        less: { javascriptEnabled: true }
+      },
+      extract: true
+    }),
+    resolve({
+      browser: true,
+      extensions
+    }),
     alias({
-      resolve: EXTENSIONS,
+      resolve: extensions,
       entries: [
         {
           find: '@',
@@ -46,26 +56,56 @@ export default {
         }
       ]
     }),
+    commonjs({
+      include: /node_modules/
+    }),
+    replace({
+      browser: true, // 这个很重要
+      preventAssignment: true,
+      'process.env.NODE_ENV': JSON.stringify(isDev ? 'development' : 'production')
+    }),
     babel({
-      extensions: EXTENSIONS, // Compile our TypeScript files
+      extensions: extensions, // Compile our TypeScript files
       babelHelpers: 'bundled',
-      include: EXTENSIONS.map(ext => `src/**/*${ext}`),
+      include: extensions.map(ext => `src/**/*${ext}`),
       babelrc: true
+    }),
+    html({
+      fileName: 'index.html',
+      title: 'Rollup + TypeScript + React = ❤️',
+      template: ({ title }) => {
+        return `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="utf-8">
+        <title>${title}</title>
+        <link rel="stylesheet" href="index.esm.css">
+      </head>
+      <body>
+        <div id="root"></div>
+        <script src="index.esm.js" type='module'></script>
+      </body>
+      </html>
+      `
+      }
+    }),
+    serve({
+      host: 'localhost',
+      port: 3000,
+      contentBase: ['lib']
+    }),
+    livereload({
+      watch: 'lib'
     }),
     copy({
       targets: [
         {
-          src: 'src/variables.scss',
+          src: 'src/styles/variables.less',
           dest: 'lib',
-          rename: 'variables.scss'
-        },
-        {
-          src: 'src/typography.scss',
-          dest: 'lib',
-          rename: 'typography.scss'
+          rename: 'styles/variables.less'
         }
       ]
     })
-  ],
-  external: EXTERNAL
+  ]
 }
