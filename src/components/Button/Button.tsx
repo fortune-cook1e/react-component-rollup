@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react'
-import './Button.scss'
+import './Button.less'
 import { ButtonProps, Color } from './Button.types'
 
 import { createNamespace } from '@/utils/bem'

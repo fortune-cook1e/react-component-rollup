@@ -19,6 +19,7 @@ const rootDir = path.resolve(__dirname, './src')
 const EXTERNAL = [Object.keys(pkg.devDependencies)]
   .concat(Object.keys(pkg.peerDependencies))
   .concat(Object.keys(pkg.dependencies))
+  .push(/@babel\/runtime/)
 
 export default {
   // 开发模式则用main，组件库打包则用index.ts
@@ -33,7 +34,7 @@ export default {
   plugins: [
     typescript({ useTsconfigDeclarationDir: true }),
     postcss({
-      plugins: [],
+      // plugins: [],
       modules: false, // 模块化
       minimize: true,
       use: {
@@ -41,7 +42,8 @@ export default {
         stylus: null,
         less: { javascriptEnabled: true }
       },
-      extract: true
+      extract: true,
+      config: false // 不走配置文件 与 webpack隔离
     }),
     resolve({
       browser: true,
@@ -66,38 +68,38 @@ export default {
     }),
     babel({
       extensions: extensions, // Compile our TypeScript files
-      babelHelpers: 'bundled',
+      babelHelpers: 'runtime',
       include: extensions.map(ext => `src/**/*${ext}`),
       babelrc: true
     }),
-    html({
-      fileName: 'index.html',
-      title: 'Rollup + TypeScript + React = ❤️',
-      template: ({ title }) => {
-        return `
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="utf-8">
-        <title>${title}</title>
-        <link rel="stylesheet" href="index.esm.css">
-      </head>
-      <body>
-        <div id="root"></div>
-        <script src="index.esm.js" type='module'></script>
-      </body>
-      </html>
-      `
-      }
-    }),
-    serve({
-      host: 'localhost',
-      port: 3000,
-      contentBase: ['lib']
-    }),
-    livereload({
-      watch: 'lib'
-    }),
+    // html({
+    //   fileName: 'index.html',
+    //   title: 'Rollup + TypeScript + React = ❤️',
+    //   template: ({ title }) => {
+    //     return `
+    //   <!DOCTYPE html>
+    //   <html lang="en">
+    //   <head>
+    //     <meta charset="utf-8">
+    //     <title>${title}</title>
+    //     <link rel="stylesheet" href="index.esm.css">
+    //   </head>
+    //   <body>
+    //     <div id="root"></div>
+    //     <script src="index.esm.js" type='module'></script>
+    //   </body>
+    //   </html>
+    //   `
+    //   }
+    // }),
+    // serve({
+    //   host: 'localhost',
+    //   port: 3000,
+    //   contentBase: ['lib']
+    // }),
+    // livereload({
+    //   watch: 'lib'
+    // }),
     copy({
       targets: [
         {

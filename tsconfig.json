@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "ESNext",
     "allowJs": true,
     "strict": true,
     "target": "ES2017",
