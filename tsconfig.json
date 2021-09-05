@@ -9,6 +9,7 @@
     "sourceMap": true,
     "esModuleInterop": true,
     "declarationDir": "lib",
+    "moduleResolution":"Node",
     "declaration": true,
     "jsx": "preserve",
     "lib": ["dom", "esnext"],

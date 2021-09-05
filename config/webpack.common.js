@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin')
-const peerDeps = require('../package.json').peerDependencies
+const deps = require('../package.json').dependencies
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -40,11 +40,12 @@ const config = {
   // FIXBUG: 解决webpack-dev-server 热更新未开启bug
   target: process.env.NODE_ENV === 'development' ? 'web' : 'browserslist',
   entry: {
-    app: paths.src + '/main.tsx'
+    app: paths.src + '/index.tsx'
   },
   output: {
     path: paths.build,
-    publicPath: isDev ? '/' : './',
+    // publicPath: isDev ? '/' : './',
+    publicPath: 'auto', // 解决 federation 找不到模块bug
     filename: isDev ? 'js/[name].js' : 'js/[name].[contenthash].js',
     chunkFilename: isDev ? 'js/[name].js' : 'js/[name].[contenthash].js'
   },
@@ -56,6 +57,13 @@ const config = {
   },
   module: {
     rules: [
+      // {
+      //   test: /bootstrap\.tsx$/,
+      //   loader: 'bundle-loader'
+      //   // options: {
+      //   //   lazy: true
+      //   // }
+      // },
       {
         test: jstsRegex,
         exclude: '/node_modules/',
@@ -143,23 +151,27 @@ const config = {
     new ModuleFederationPlugin({
       name: 'reactComponent',
       filename: 'react-component.js',
-      // remotes: {
-      //   // home: 'home@http://localhost:8080/remoteEntry.js'
-      // },
+      remotes: {
+        app2: 'app2@http://localhost:3000/app2.js'
+        // home: 'home@http://localhost:3002/home.js',
+        // reactApp: 'reactApp@http://localhost:8081/react-app.js'
+        // cookie: 'cookie@http://localhost:8080/cookie.js'
+      },
       exposes: {
-        './Button': './src/components/Button/Button.tsx'
+        './Button': './src/components/Button',
+        './ChartDemo': './src/components/ChartDemo'
       },
       shared: {
-        ...peerDeps,
+        ...deps,
         react: {
           singleton: true,
           eager: true,
-          requiredVersion: peerDeps.react
+          requiredVersion: deps.react
         },
         'react-dom': {
           singleton: true,
           eager: true,
-          requiredVersion: peerDeps['react-dom']
+          requiredVersion: deps['react-dom']
         }
       }
     })

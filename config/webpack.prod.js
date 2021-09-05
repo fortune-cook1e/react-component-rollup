@@ -12,6 +12,8 @@ const clearPath = path.resolve(__dirname, '../dist')
 const REACT_MODULE =
   /[\\/]node_modules[\\/](react|react-dom|react-router-config|react-router-dom)[\\/]/
 
+const CHART_MODULE = /[\\/]node_modules[\\/](bizcharts)[\\/]/
+
 module.exports = merge(common, {
   mode: 'production',
   devtool: false,
@@ -48,6 +50,14 @@ module.exports = merge(common, {
         react: {
           test: REACT_MODULE,
           name: 'react',
+          minChunks: 1,
+          priority: 10,
+          enforce: true,
+          chunks: 'all'
+        },
+        chart: {
+          test: CHART_MODULE,
+          name: 'bizchart',
           minChunks: 1,
           priority: 10,
           enforce: true,
