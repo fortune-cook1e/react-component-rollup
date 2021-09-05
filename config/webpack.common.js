@@ -151,6 +151,7 @@ const config = {
     new ModuleFederationPlugin({
       name: 'reactComponent',
       filename: 'react-component.js',
+      // library: { type: 'umd' },
       remotes: {
         app2: 'app2@http://localhost:3000/app2.js'
         // home: 'home@http://localhost:3002/home.js',
