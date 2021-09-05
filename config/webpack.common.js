@@ -152,6 +152,7 @@ const config = {
       name: 'reactComponent',
       filename: 'react-component.js',
       // library: { type: 'umd' },
+      library: { type: 'var', name: 'reactComponent' },
       remotes: {
         app2: 'app2@http://localhost:3000/app2.js'
         // home: 'home@http://localhost:3002/home.js',

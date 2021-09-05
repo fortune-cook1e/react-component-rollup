@@ -64,10 +64,10 @@ module.exports = merge(common, {
           chunks: 'all'
         }
       }
+    },
+    runtimeChunk: {
+      name: 'runtime'
     }
-    // runtimeChunk: {
-    //   name: 'runtime'
-    // }
   },
   performance: {
     hints: false,
