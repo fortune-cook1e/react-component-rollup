@@ -143,9 +143,9 @@ const config = {
     new ModuleFederationPlugin({
       name: 'reactComponent',
       filename: 'react-component.js',
-      remotes: {
-        // home: 'home@http://localhost:8080/remoteEntry.js'
-      },
+      // remotes: {
+      //   // home: 'home@http://localhost:8080/remoteEntry.js'
+      // },
       exposes: {
         './Button': './src/components/Button/Button.tsx'
       },
@@ -153,10 +153,12 @@ const config = {
         ...peerDeps,
         react: {
           singleton: true,
+          eager: true,
           requiredVersion: peerDeps.react
         },
         'react-dom': {
           singleton: true,
+          eager: true,
           requiredVersion: peerDeps['react-dom']
         }
       }
