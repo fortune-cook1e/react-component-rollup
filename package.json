@@ -17,6 +17,7 @@
     "build:component": "cross-env rm -rf lib && NODE_ENV=production rollup -c",
     "dev:story": "start-storybook -p 6006",
     "build:story": "build-storybook",
+    "server": "yarn build:page && node server.js",
     "lint": "cross-env eslint src --ext .js,.jsx,.ts,.tsx --cache --fix",
     "stylelint": "stylelint src *.less,*.css --fix",
     "pre-publish": "yarn run build:component"
@@ -60,6 +61,7 @@
     "@storybook/addon-essentials": "^6.3.7",
     "@storybook/addon-links": "^6.3.7",
     "@storybook/react": "^6.3.7",
+    "@types/express": "^4.17.13",
     "@types/react": "^17.0.18",
     "@types/react-dom": "^17.0.6",
     "@types/react-router-dom": "^5.1.7",
@@ -76,6 +78,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "express": "^4.17.1",
     "html-webpack-plugin": "^5.3.2",
     "husky": "4.2.5",
     "less": "^4.1.1",

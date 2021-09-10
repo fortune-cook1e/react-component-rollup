@@ -149,16 +149,17 @@ const config = {
       chunkFilename: '[id].[contenthash].css'
     }),
     new ModuleFederationPlugin({
-      name: 'reactComponent',
+      name: 'rComponent',
+      // library: { type: 'var', name: 'rComponent' },
       filename: 'react-component.js',
       // library: { type: 'umd' },
-      library: { type: 'var', name: 'reactComponent' },
-      remotes: {
-        app2: 'app2@http://localhost:3000/app2.js'
-        // home: 'home@http://localhost:3002/home.js',
-        // reactApp: 'reactApp@http://localhost:8081/react-app.js'
-        // cookie: 'cookie@http://localhost:8080/cookie.js'
-      },
+      // library: { type: 'var', name: 'reactComponent' },
+      // remotes: {
+      //   app2: 'app2@http://localhost:3000/app2.js'
+      //   // home: 'home@http://localhost:3002/home.js',
+      //   // reactApp: 'reactApp@http://localhost:8081/react-app.js'
+      //   // cookie: 'cookie@http://localhost:8080/cookie.js'
+      // },
       exposes: {
         './Button': './src/components/Button',
         './ChartDemo': './src/components/ChartDemo'
