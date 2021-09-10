@@ -12,6 +12,7 @@ yarn build:component // build for component
 yarn watch:component // dev for component
 yarn build:doc
 yarn pre-publish
+yarn server // server for dist
 ```
 
 ## Preview
