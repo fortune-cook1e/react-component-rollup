@@ -18,60 +18,57 @@ module.exports = merge(common, {
   mode: 'production',
   devtool: false,
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: 'styles/[name].[contenthash].css',
-      chunkFilename: '[id].css'
-    }),
-    new CleanWebpackPlugin({
-      dry: false,
-      verbose: true,
-      cleanOnceBeforeBuildPatterns: [clearPath, clearPath]
-    })
+    // new MiniCssExtractPlugin({
+    //   filename: 'styles/[name].[contenthash].css',
+    //   chunkFilename: '[id].css'
+    // }),
+    // new CleanWebpackPlugin({
+    //   dry: false,
+    //   verbose: true,
+    //   cleanOnceBeforeBuildPatterns: [clearPath, clearPath]
+    // })
     // new BundleAnalyzerPlugin()
-  ],
-  optimization: {
-    minimize: true,
-    minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
-    // Once your build outputs multiple chunks, this option will ensure they share the webpack runtime
-    // instead of having their own. This also helps with long-term caching, since the chunks will only
-    // change when actual code changes, not the webpack runtime.
-    splitChunks: {
-      chunks: 'all',
-      minChunks: 3,
-      cacheGroups: {
-        // vendor: {
-        //   test: regVendor,
-        //   name: 'vendor',
-        //   minChunks: 1,
-        //   priority: 10,
-        //   enforce: true,
-        //   chunks: 'all'
-        // },
-        react: {
-          test: REACT_MODULE,
-          name: 'react',
-          minChunks: 1,
-          priority: 10,
-          enforce: true,
-          chunks: 'all'
-        },
-        chart: {
-          test: CHART_MODULE,
-          name: 'bizchart',
-          minChunks: 1,
-          priority: 10,
-          enforce: true,
-          chunks: 'all'
-        }
-      }
-    },
-    runtimeChunk: {
-      name: 'runtime'
-    }
-  },
-  performance: {
-    hints: false,
-    maxEntrypointSize: 512000,
-    maxAssetSize: 512000
-  }
+  ]
+  // optimization: {
+  //   minimize: true,
+  //   minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
+  //   splitChunks: {
+  //     chunks: 'all',
+  //     minChunks: 3,
+  //     cacheGroups: {
+  //       vendor: {
+  //         test: regVendor,
+  //         name: 'vendor',
+  //         minChunks: 1,
+  //         priority: 10,
+  //         enforce: true,
+  //         chunks: 'all'
+  //       },
+  //       react: {
+  //         test: REACT_MODULE,
+  //         name: 'react',
+  //         minChunks: 1,
+  //         priority: 10,
+  //         enforce: true,
+  //         chunks: 'all'
+  //       },
+  //       chart: {
+  //         test: CHART_MODULE,
+  //         name: 'bizchart',
+  //         minChunks: 1,
+  //         priority: 10,
+  //         enforce: true,
+  //         chunks: 'all'
+  //       }
+  //     }
+  //   },
+  //   runtimeChunk: {
+  //     name: 'runtime'
+  //   }
+  // },
+  // performance: {
+  //   hints: false,
+  //   maxEntrypointSize: 512000,
+  //   maxAssetSize: 512000
+  // }
 })
