@@ -149,9 +149,9 @@ const config = {
       chunkFilename: '[id].[contenthash].css'
     }),
     new ModuleFederationPlugin({
-      name: 'rComponent',
+      name: 'cookieComponent',
       // library: { type: 'var', name: 'rComponent' },
-      filename: 'react-component.js',
+      filename: 'cookie-component.js',
       // library: { type: 'umd' },
       // library: { type: 'var', name: 'reactComponent' },
       // remotes: {
